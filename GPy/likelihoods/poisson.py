@@ -126,13 +126,13 @@ class Poisson(Likelihood):
         d3lik_dlink3 = 2*y/(link_f)**3
         return d3lik_dlink3
 
-    def conditional_mean(self,gp):
+    def conditional_mean(self, gp, Y_metadata=None):
         """
         The mean of the random variable conditioned on one value of the GP
         """
         return self.gp_link.transf(gp)
 
-    def conditional_variance(self,gp):
+    def conditional_variance(self, gp, Y_metadata=None):
         """
         The variance of the random variable conditioned on one value of the GP
         """

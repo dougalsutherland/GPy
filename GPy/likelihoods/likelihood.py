@@ -66,13 +66,13 @@ class Likelihood(Parameterized):
         """
         return Y
 
-    def conditional_mean(self, gp):
+    def conditional_mean(self, gp, Y_metadata=None):
         """
         The mean of the random variable conditioned on one value of the GP
         """
         raise NotImplementedError
 
-    def conditional_variance(self, gp):
+    def conditional_variance(self, gp, Y_metadata=None):
         """
         The variance of the random variable conditioned on one value of the GP
         """
@@ -300,7 +300,7 @@ class Likelihood(Parameterized):
             if p < 1e-10:
                 return 0.
             else:
-                return self.conditional_mean(f)*p
+                return self.conditional_mean(f, Y_metadata=Y_metadata)*p
         scaled_mean = [quad(int_mean, fmin, fmax,args=(mj,s2j))[0] for mj,s2j in zip(mu,variance)]
         mean = np.array(scaled_mean)[:,None] / np.sqrt(2*np.pi*(variance))
         return mean
@@ -334,7 +334,7 @@ class Likelihood(Parameterized):
             if p < 1e-10:
                 return 0.
             else:
-                return self.conditional_variance(f)*p
+                return self.conditional_variance(f, Y_metadata=Y_metadata)*p
         scaled_exp_variance = [quad(int_var, fmin_v, fmax,args=(mj,s2j))[0] for mj,s2j in zip(mu,variance)]
         exp_var = np.array(scaled_exp_variance)[:,None] / normalizer
 
@@ -353,7 +353,7 @@ class Likelihood(Parameterized):
             if p < 1e-10:
                 return 0.
             else:
-                return self.conditional_mean(f)**2*p
+                return self.conditional_mean(f, Y_metadata=Y_metadata)**2*p
 
         scaled_exp_exp2 = [quad(int_pred_mean_sq, fmin_m, fmax,args=(mj,s2j,pm2j))[0] for mj,s2j,pm2j in zip(mu,variance,predictive_mean_sq)]
         exp_exp2 = np.array(scaled_exp_exp2)[:,None] / normalizer

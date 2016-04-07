@@ -274,10 +274,10 @@ class StudentT(Likelihood):
         else:
             return super(StudentT, self).predictive_variance(mu, variance, predictive_mean, Y_metadata)
 
-    def conditional_mean(self, gp):
+    def conditional_mean(self, gp, Y_metadata=None):
         return self.gp_link.transf(gp)
 
-    def conditional_variance(self, gp):
+    def conditional_variance(self, gp, Y_metadata=None):
         return self.deg_free/(self.deg_free - 2.)
 
     def samples(self, gp, Y_metadata=None):
